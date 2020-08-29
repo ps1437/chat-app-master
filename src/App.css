@@ -1,0 +1,68 @@
+body {
+  background-image: linear-gradient(to right top, #bac6d8, #cdd3e2, #dfe1eb, #f0f0f5, #ffffff);   min-height: 100vh;
+   min-height: 100vh;
+ }
+ ::-webkit-scrollbar {
+   width: 5px;
+ }
+ ::-webkit-scrollbar-track {
+   width: 5px;
+   background: #f5f5f5;
+ }
+ ::-webkit-scrollbar-thumb {
+   width: 1em;
+   background-color: #ddd;
+   outline: 1px solid slategrey;
+   border-radius: 1rem;
+ }
+ .chat-img {
+   width: 50px;
+   height: 50px;
+ }
+ .img-circle {
+   border-radius: 50%;
+ }
+ .chat-img {
+   display: inline-block;
+ }
+ .text-small {
+   font-size: 0.9rem;
+ }
+ .messages-box,
+ .chat-box {
+   height: 510px;
+   overflow-y: scroll;
+ }
+ .clearfix:after {
+   visibility: hidden;
+   display: block;
+   font-size: 0;
+   content: " ";
+   clear: both;
+   height: 0;
+ }
+ .text-blue{
+   color: blue;
+ }
+ .rounded-lg {
+   border-radius: 0.5rem;
+ }
+ input::placeholder {
+   font-size: 0.9rem;
+   color: #999;
+ }
+ .message{
+  width: fit-content;
+  word-break: break-word;
+  max-Width: 70%;
+ }
+
+  .bg-primary{
+  background-color: #0062cc !important;
+ 
+}
+ .bg-secondary{
+   background-color: darkorange !important;
+  
+ }
+
