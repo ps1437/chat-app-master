@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import Picker from "emoji-picker-react";
+
 import { getCurrentTime, capitalize } from "./utils";
 import Message from "./Message";
 
-const Chat = ({ name }) => {
+const Chat = ({ location }) => {
   const [userID, setUserID] = useState();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-
   const [users, setUsers] = useState([]);
   const [emojiClicked, showPanel] = useState(false);
-
   const socketRef = useRef();
 
   const sendEmoji = (event, emojiObject) => {
@@ -20,22 +19,17 @@ const Chat = ({ name }) => {
 
   useEffect(() => {
     socketRef.current = io.connect("/");
+    socketRef.current.emit("join", location.state.userName);
+    setUserID(location.state.userName);
+  }, [location]);
 
-    socketRef.current.on("join", (id) => {
-      setUserID(id);
-    });
-
-    socketRef.current.on("message", (message) => {
+  useEffect(() => {
+    socketRef.current.on("received message", (message) => {
       setMessages((oldMsgs) => [...oldMsgs, message]);
     });
-    socketRef.current.on("user", (users) => {
+    socketRef.current.on("user-connected", (users) => {
       setUsers(users);
     });
-    socketRef.current.on("user disconnected", function (userName) {
-      const userData = users.filter((item) => item.userName !== userName);
-      setUsers(userData);
-    });
-    
   }, []);
 
   function sendMessage(e) {
@@ -43,13 +37,11 @@ const Chat = ({ name }) => {
     const messageObject = {
       body: message,
       id: userID,
-      name: "UNKNWON",
     };
     showPanel(false);
     setMessage("");
     socketRef.current.emit("send message", messageObject);
   }
-
 
   if (users.length === 0) {
     return (
@@ -69,23 +61,22 @@ const Chat = ({ name }) => {
             Active Users
           </div>
           {users.map((user) => (
-            <div className="users">
-              🔵 {capitalize(user.userName)} Joined the chat{" "}
-            </div>
+            <div className="users">🔵 {capitalize(user)} Joined the chat </div>
           ))}
-        </div>{" "}
-        <div className="col-md-8">
+        </div>
+        <div className="col-md-8" style={{ padding: 0 }}>
+        
+          <h5 class="card-title text-right activeUsers">{userID}</h5>
           <div className="col-12 px-2 ">
             <div
               className="px-2 py-3 chat-box bg-white"
               style={{ height: 400 }}
             >
               {messages.map((msg, index) => {
-                console.log(msg);
                 return (
                   <Message
                     otherUserMsg={msg.id !== userID}
-                    userName={msg.id}
+                    userName={userID}
                     message={msg.body}
                     index={index}
                     time={getCurrentTime("-")}
