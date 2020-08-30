@@ -27,16 +27,7 @@ body {
   outline: 1px solid slategrey;
   border-radius: 1rem;
 }
-.chat-img {
-  width: 50px;
-  height: 50px;
-}
-.img-circle {
-  border-radius: 50%;
-}
-.chat-img {
-  display: inline-block;
-}
+
 .text-small {
   font-size: 0.9rem;
 }
@@ -155,6 +146,12 @@ input::placeholder {
 .background-white {
   background-color: white;
 }
+.btn-success:hover{
+  background-color: rgb(95, 18, 167);
+}
+.btn-success{
+  background-color: blueviolet;
+}
 .activeUsers {
   background-color: blueviolet;
   color: white;
@@ -168,4 +165,25 @@ input::placeholder {
   text-align: center;
   font-size: 2rem;
   height: 100%;
+}
+
+
+body{
+background: #49c0f0; /* Old browsers */
+background: -moz-linear-gradient(top,  #0eaff1 0%, #66cff9 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #0eaff1 0%,#66cff9 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #0eaff1 0%,#66cff9 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0eaff1', endColorstr='#66cff9',GradientType=0 ); /* IE6-9 */
+
+}
+
+.chat-header-title{
+  background: linear-gradient(to bottom, #49c0f0 0%,#2cafe3 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0eaff1', endColorstr='#2cafe3',GradientType=0 );
+  color: white;
+}
+
+.chat-room-card{
+  box-shadow: 2px 3px 2px #5280ff;;
+  border: 1px solid rgb(44 171 206);
 }
