@@ -116,7 +116,7 @@ const Chat = ({ location }) => {
                     type="button"
                     className="btn "
                   >
-                    <span role="img" aria-labelledby="emoji">
+                    <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
                       &#128540;
                     </span>
                   </button>
