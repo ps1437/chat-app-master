@@ -17,12 +17,20 @@ io.on("connection", (socket) => {
   socket.on("send message", (body) => {
     io.emit("received message", body);
   });
- 
 
-  // socket.on("disconnect", () => {
-  //   delete activeConnections[socket.id];
-  //   io.emit("user-disconnected", activeConnections[socket.id]);
-  // });
+  socket.on("base64 file", function (msg) {
+    io.sockets.emit(
+      "base64 file",
+      {
+        body: msg.file.toString("base64"),
+        id: msg.id,
+        type: "IMG",
+        fileName: msg.fileName,
+      }
+    );
+  });
+
+
 });
 
 server.listen(8000, () => {

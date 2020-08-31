@@ -30,6 +30,9 @@ const Chat = ({ location }) => {
     socketRef.current.on("user-connected", (users) => {
       setUsers(users);
     });
+    socketRef.current.on("base64 file", (img) => {
+      setMessages((oldMsgs) => [...oldMsgs, img]);
+    });
   }, []);
 
   function sendMessage(e) {
@@ -37,10 +40,29 @@ const Chat = ({ location }) => {
     const messageObject = {
       body: message,
       id: userID,
+      type: "Text",
     };
     showPanel(false);
     setMessage("");
     socketRef.current.emit("send message", messageObject);
+  }
+
+  function sendFile(e) {
+    var data = e.target.files[0];
+    readThenSendFile(data);
+  }
+
+  function readThenSendFile(data) {
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+      var msg = {};
+      msg.id = userID;
+      msg.file = evt.target.result;
+      msg.fileName = data.name;
+      msg.type = "IMG";
+      socketRef.current.emit("base64 file", msg);
+    };
+    reader.readAsDataURL(data);
   }
 
   if (users.length === 0) {
@@ -65,7 +87,6 @@ const Chat = ({ location }) => {
           ))}
         </div>
         <div className="col-md-8" style={{ padding: 0 }}>
-        
           <h5 class="card-title text-right activeUsers">{userID}</h5>
           <div className="col-12 px-2 ">
             <div
@@ -76,8 +97,9 @@ const Chat = ({ location }) => {
                 return (
                   <Message
                     otherUserMsg={msg.id !== userID}
-                    userName={userID}
+                    userName={msg.id}
                     message={msg.body}
+                    type={msg.type}
                     index={index}
                     time={getCurrentTime("-")}
                   />
@@ -88,9 +110,36 @@ const Chat = ({ location }) => {
 
             <form onSubmit={sendMessage} class="bg-light p-2">
               <div class="input-group">
+                <label class="custom-file-upload">
+                  <i  title="send pics" class="fa fa-upload" aria-hidden="true"></i>
+
+                  <input
+                    type="file"
+                    className="form-control rounded-0 border-0 py-4 bg-light"
+                    onChange={(e) => sendFile(e)}
+                    autoComplete="off"
+                    accept="image/*"
+                    
+                    autoFocus="on"
+                    placeholder="type your message here..."
+                  />
+                </label>
+
+                <button
+                  onClick={() => showPanel(!emojiClicked)}
+                  id="clear"
+                  type="button"
+                  title="Emoji"
+                  className="btn "
+                >
+                  <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
+                    &#128540;
+                  </span>
+                </button>
+
                 <input
                   type="text"
-                  className="form-control rounded-0 border-0 py-4 bg-light"
+                  className="form-control rounded-0 border-1 py-4"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   autoComplete="off"
@@ -98,27 +147,9 @@ const Chat = ({ location }) => {
                   placeholder="type your message here..."
                 />
                 <div class="input-group-append">
-                  <button type="submit" className="btn btn-primary">
-                    Send
-                  </button>
-
-                  <button
-                    onClick={() => setMessage("")}
-                    id="clear"
-                    type="button"
-                    className="btn btn-default"
-                  >
-                    Clear
-                  </button>
-                  <button
-                    onClick={() => showPanel(!emojiClicked)}
-                    id="clear"
-                    type="button"
-                    className="btn "
-                  >
-                    <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
-                      &#128540;
-                    </span>
+                  <button type="submit" className="btn btn-success">
+                    <i class="fa fa-paper-plane"
+                    aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
