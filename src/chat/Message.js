@@ -1,15 +1,18 @@
 import React from "react";
 
-const Message = ({ index, message, time, otherUserMsg, userName }) => {
-  let classes = "text-left";
-  if (otherUserMsg) {
-    classes = "text-right";
+const Message = ({ index, message, time, otherUserMsg, userName, type }) => {
+  var classes = "text-right";
+  if (type === "IMG") {
+    message = <img src={message} alt="img" style={{ height: "100px" }} />;
   }
 
+  if (otherUserMsg) {
+     classes = "text-left";
+  }
   let messageBody = (
     <div className={otherUserMsg ? "msg-bubble-right" : "msg-bubble-left"}>
       <div
-        className="small text-black"
+        className={"small text-black " + classes}
         style={{ color: "antiquewhite", fontWeight: "700" }}
       >
         {userName}
@@ -21,6 +24,8 @@ const Message = ({ index, message, time, otherUserMsg, userName }) => {
   );
 
   if (otherUserMsg) {
+    classes = "text-right";
+
     return (
       <div className="media  mb-1  message" key={index}>
         <div className="media-body ml-2">
