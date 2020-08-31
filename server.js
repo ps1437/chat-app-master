@@ -5,6 +5,7 @@ const app = express();
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server);
+var port = process.env.PORT || 8000;
 
 const activeUsers = new Set();
 const activeConnections = {};
@@ -43,6 +44,6 @@ io.on("connection", (socket) => {
 
 });
 
-server.listen(8000, () => {
-  console.log("server started at 8000");
+server.listen(port, () => {
+  console.log(`server started at ${port}`);
 });
