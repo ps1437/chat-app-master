@@ -7,8 +7,10 @@ body {
     #f0f0f5,
     #ffffff
   );
-  min-height: 100vh;
-  min-height: 100vh;
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 * {
   padding: 0;
@@ -144,14 +146,13 @@ input::placeholder {
 }
 
 .small {
-  font-size: 64%;
+  font-size: 72%;
 }
 
 .users {
   background-color: white;
   padding: 0.4rem;
   font-size: 1rem;
-  font-family: cursive;
   border-width: 1rem solid black;
   border-bottom: 1px solid #d8cfcf;
 }
@@ -164,10 +165,13 @@ input::placeholder {
 .btn-success {
   background-color: blueviolet;
 }
+.navbar-blue{background-color: blueviolet;max-height: 3.4rem;}
+
 .activeUsers {
   background-color: blueviolet;
   color: white;
   padding: 0.4rem;
+  line-height: 2.6rem;
 }
 .container-bgcolor {
   background-color: #f3f3ee;
@@ -217,3 +221,33 @@ input[type="file"] {
   background-color: blueviolet;
   color: white;
 }
+
+
+.container-chat{
+  padding-left: 0;
+  padding-right: 0;
+  margin-top: 1rem;
+}
+
+.fa{
+  cursor: pointer;
+}
+.menuToggle{    border-radius: 50px;
+  border-color: #eadede3d;
+  border-width: 3px;}
+
+  .bg-light-chat{
+    background-color: #fdfeff;
+  }
+
+  .online{
+    height: 26px;
+    display: inline-flex;
+    margin-right: 0.6rem;
+    width: 26px;
+    background-color: green;
+    padding: 3px 7px;
+    color: white;
+    border-radius: 50%;
+    font-weight: bolder;
+  }

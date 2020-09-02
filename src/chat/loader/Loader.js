@@ -2,8 +2,8 @@ import React from 'react'
 
 const Loader =()=>{
     return(
-        <div class="loader">
-        <div id="ld3">
+        <div className="loader">
+        <div id="loader">
           <div>
           </div>
           <div>

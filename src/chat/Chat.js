@@ -7,6 +7,8 @@ import Message from "./Message";
 
 const Chat = ({ location }) => {
   const [userID, setUserID] = useState();
+  const [toggle, setToggle] = useState();
+
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [users, setUsers] = useState([]);
@@ -51,6 +53,9 @@ const Chat = ({ location }) => {
     var data = e.target.files[0];
     readThenSendFile(data);
   }
+  function toggleSidebar() {
+    setToggle(!toggle);
+  }
 
   function readThenSendFile(data) {
     var reader = new FileReader();
@@ -73,21 +78,52 @@ const Chat = ({ location }) => {
     );
   }
   return (
-    <div className="container justify-center container-bgcolor">
-      <div className="row mt-2">
-        <div
-          className="col-md-4 background-white"
-          style={{ paddingRight: 0, paddingLeft: 0 }}
-        >
-          <div className="activeUsers text-center font-weight-bold">
-            Active Users
-          </div>
-          {users.map((user) => (
-            <div className="users">🔵 {capitalize(user)} Joined the chat </div>
+    <div
+      id="wrapper"
+      style={{marginTop:"1rem"}}
+      className={toggle ? " d-flex toggledright" : "container d-flex toggle"}
+    >
+      <div className="bg-light-chat " id="sidebar-wrapper">
+        <div className="activeUsers text-center font-weight-bold">
+          Active Users
+        </div>
+        <div className="list-group list-group-flush">
+          {users.map((user,index) => (
+            <div  key={index} className="users list-group-item list-group-item-action bg-light-chat">
+             <div className="online">{user && user.charAt(0).toUpperCase()}
+              </div>{capitalize(user)}
+            </div>
           ))}
         </div>
-        <div className="col-md-8" style={{ padding: 0 }}>
-          <h5 class="card-title text-right activeUsers">{userID}</h5>
+      </div>
+
+      <div id="page-content-wrapper">
+        <nav className="navbar navbar-expand-lg navbar-blue ">
+          <button
+            className="btn btn-default menuToggle"
+            id="menu-toggle"
+            onClick={toggleSidebar}
+          >
+            <i className="text-white fa fa-bars" aria-hidden="true"></i>
+          </button>
+          <div className="title">Fun2Chat</div>
+
+          <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <div className="font-weight-bold text-white activeUsers" >
+                 {userID}
+                </div>
+              </li>
+              <li className="nav-item">
+              <div className="font-weight-bold text-white activeUsers" >
+              <i className="fa fa-video-camera" aria-hidden="true" title="video call"></i>
+               </div></li>
+            </ul>
+          </div>
+        </nav>
+
+        <div className="container container-chat">
           <div className="col-12 px-2 ">
             <div
               className="px-2 py-3 chat-box bg-white"
@@ -108,18 +144,21 @@ const Chat = ({ location }) => {
             </div>
             {emojiClicked ? <Picker onEmojiClick={sendEmoji} /> : ""}
 
-            <form onSubmit={sendMessage} class="bg-light p-2">
-              <div class="input-group">
-                <label class="custom-file-upload">
-                  <i  title="send pics" class="fa fa-upload" aria-hidden="true"></i>
+            <form onSubmit={sendMessage} className="bg-light-chat p-2">
+              <div className="input-group">
+                <label className="custom-file-upload">
+                  <i
+                    title="send pics"
+                    className="fa fa-upload"
+                    aria-hidden="true"
+                  ></i>
 
                   <input
                     type="file"
-                    className="form-control rounded-0 border-0 py-4 bg-light"
+                    className="form-control rounded-0 border-0 py-4 bg-light-chat"
                     onChange={(e) => sendFile(e)}
                     autoComplete="off"
                     accept="image/*"
-                    
                     autoFocus="on"
                     placeholder="type your message here..."
                   />
@@ -130,7 +169,7 @@ const Chat = ({ location }) => {
                   id="clear"
                   type="button"
                   title="Emoji"
-                  className="btn "
+                  className="btn btn-emoji"
                 >
                   <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
                     &#128540;
@@ -146,10 +185,9 @@ const Chat = ({ location }) => {
                   autoFocus="on"
                   placeholder="type your message here..."
                 />
-                <div class="input-group-append">
+                <div className="input-group-append">
                   <button type="submit" className="btn btn-success">
-                    <i class="fa fa-paper-plane"
-                    aria-hidden="true"></i>
+                    <i className="fa fa-paper-plane" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
