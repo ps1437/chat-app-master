@@ -16,7 +16,12 @@ const Home = ({ isLogin }) => {
     <div class="section-1-container section-container">
       <div class="container">
         <div class="row">
-          <div class="col-10 offset-1 col-lg-8 offset-lg-2  d-flex justify-content-center align-items-center">
+          <div
+            class="col-md-7 col-sm-10 col-xs-10
+           offset-md-1 col-lg-8 offset-lg-2 
+            d-flex justify-content-center 
+            align-items-center"
+          >
             <div class="div-to-align">
               <div class="card rounded-1 chat-room-card">
                 <div class="card-header chat-header-title">

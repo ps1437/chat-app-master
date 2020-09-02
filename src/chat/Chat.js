@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import Picker from "emoji-picker-react";
+import { useToasts } from 'react-toast-notifications'
 
 import { getCurrentTime, capitalize } from "./utils";
 import Message from "./Message";
@@ -14,6 +15,7 @@ const Chat = ({ location }) => {
   const [users, setUsers] = useState([]);
   const [emojiClicked, showPanel] = useState(false);
   const socketRef = useRef();
+  const { addToast } = useToasts()
 
   const sendEmoji = (event, emojiObject) => {
     setMessage((res) => res + emojiObject.emoji);
@@ -31,7 +33,17 @@ const Chat = ({ location }) => {
     });
     socketRef.current.on("user-connected", (users) => {
       setUsers(users);
+     
     });
+    socketRef.current.on("new-user-connected", (user) => {
+      addToast(`${user} join the chat room `, {
+        appearance: 'info',
+        autoDismiss: true,
+      })
+     
+    });
+    
+    
     socketRef.current.on("base64 file", (img) => {
       setMessages((oldMsgs) => [...oldMsgs, img]);
     });

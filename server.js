@@ -23,6 +23,8 @@ io.on("connection", (socket) => {
     activeUsers.add(username);
     activeConnections[socket.id] = username;
     io.emit("user-connected", [...activeUsers]);
+    socket.broadcast.emit("new-user-connected" ,username)
+  
   });
 
   socket.on("send message", (body) => {
