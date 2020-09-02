@@ -164,7 +164,13 @@
 .title {
   color: #fffbf3;
   padding: 0.8rem;
-  margin-left: 1rem;
   font-size: 1.2rem;
   background-color: #632f94;
+}
+
+.navbar-nav {
+  padding: 0px 10px;
+}
+.navbar-collapse {
+  z-index: 50;
 }

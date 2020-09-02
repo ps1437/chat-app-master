@@ -80,7 +80,7 @@ const Chat = ({ location }) => {
   return (
     <div
       id="wrapper"
-      style={{marginTop:"1rem"}}
+      style={{ marginTop: "1rem" }}
       className={toggle ? " d-flex toggledright" : "container d-flex toggle"}
     >
       <div className="bg-light-chat " id="sidebar-wrapper">
@@ -88,38 +88,47 @@ const Chat = ({ location }) => {
           Active Users
         </div>
         <div className="list-group list-group-flush">
-          {users.map((user,index) => (
-            <div  key={index} className="users list-group-item list-group-item-action bg-light-chat">
-             <div className="online">{user && user.charAt(0).toUpperCase()}
-              </div>{capitalize(user)}
+          {users.map((user, index) => (
+            <div
+              key={index}
+              className="users list-group-item list-group-item-action bg-light-chat"
+            >
+              <div className="online">
+                {user && user.charAt(0).toUpperCase()}
+              </div>
+              {capitalize(user)}
             </div>
           ))}
         </div>
       </div>
 
       <div id="page-content-wrapper">
-        <nav className="navbar navbar-expand-lg navbar-blue ">
+        <nav class="navbar navbar-expand-md navbar-blue">
           <button
             className="btn btn-default menuToggle"
-            id="menu-toggle"
             onClick={toggleSidebar}
           >
             <i className="text-white fa fa-bars" aria-hidden="true"></i>
           </button>
-          <div className="title">Fun2Chat</div>
 
-          <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <div className="font-weight-bold text-white activeUsers" >
-                 {userID}
-                </div>
-              </li>
-              <li className="nav-item">
-              <div className="font-weight-bold text-white activeUsers" >
-              <i className="fa fa-video-camera" aria-hidden="true" title="video call"></i>
-               </div></li>
-            </ul>
+          <button
+            type="button"
+            class="navbar-toggler"
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+          >
+            <i className="text-white fa fa-bars" aria-hidden="true"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+              <span class="nav-item text-white active title">Fun2Chat</span>
+            </div>
+            <div class="navbar-nav ml-auto">
+              <div className="font-weight-bold text-white activeUsers">
+                {userID}
+              </div>
+            </div>
           </div>
         </nav>
 

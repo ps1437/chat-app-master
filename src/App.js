@@ -5,7 +5,7 @@ import Routers from "./chat/router/Routers";
 function App() {
   return (
     <>
-      <div className="container">
+      <div className="container  h-100 ">
         <Routers/>
       </div>
     </>

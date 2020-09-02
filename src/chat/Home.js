@@ -13,11 +13,11 @@ const Home = ({ isLogin }) => {
     history.push("/chat", user);
   }
   return (
-    <div class="container py-5">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-5 mx-auto">
+    <div class="section-1-container section-container">
+      <div class="container">
+        <div class="row">
+          <div class="col-10 offset-1 col-lg-8 offset-lg-2  d-flex justify-content-center align-items-center">
+            <div class="div-to-align">
               <div class="card rounded-1 chat-room-card">
                 <div class="card-header chat-header-title">
                   <h3 class="mb-0 text-center">Chat Room</h3>
