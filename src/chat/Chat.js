@@ -42,8 +42,7 @@ const Chat = ({ location }) => {
       })
      
     });
-    
-    
+      
     socketRef.current.on("base64 file", (img) => {
       setMessages((oldMsgs) => [...oldMsgs, img]);
     });
@@ -133,7 +132,7 @@ const Chat = ({ location }) => {
           </button>
 
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav">
+            <div class="navbar-nav navbar-brand">
               <span class="nav-item text-white active title">Fun2Chat</span>
             </div>
             <div class="navbar-nav ml-auto">
