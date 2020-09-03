@@ -5,6 +5,7 @@ import { useToasts } from "react-toast-notifications";
 
 import { getCurrentTime } from "./utils";
 import ChatBox from "./ChatBox";
+import Sidebar from "./Sidebar";
 
 const Chat = ({ location }) => {
   const [userID, setUserID] = useState();
@@ -50,7 +51,7 @@ const Chat = ({ location }) => {
     });
   }, []);
 
-  function sendToast(msg){
+  function sendToast(msg) {
     addToast(msg, {
       appearance: "info",
       autoDismiss: true,
@@ -89,15 +90,13 @@ const Chat = ({ location }) => {
     reader.readAsDataURL(data);
   }
 
- 
   return (
     <div
       id="wrapper"
       style={{ marginTop: "1rem" }}
       className={toggle ? " d-flex toggledright" : "container d-flex toggle"}
     >
-     
-
+      <Sidebar users={users} />
       <div id="page-content-wrapper">
         <nav class="navbar navbar-expand-md navbar-blue">
           <button
