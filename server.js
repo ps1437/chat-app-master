@@ -8,42 +8,38 @@ const io = socket(server);
 var port = process.env.PORT || 8000;
 
 const activeUsers = new Set();
-const activeConnections = {};
 
+app.use(express.static(path.join(__dirname, "build")));
 
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
 
 io.on("connection", (socket) => {
   socket.on("join", (username) => {
+    socket.userId = username;
     activeUsers.add(username);
-    activeConnections[socket.id] = username;
     io.emit("user-connected", [...activeUsers]);
-    socket.broadcast.emit("new-user-connected" ,username)
-  
+    socket.broadcast.emit("new-user-connected", username);
   });
 
   socket.on("send message", (body) => {
     io.emit("received message", body);
   });
 
-  socket.on("base64 file", function (msg) {
-    io.sockets.emit(
-      "base64 file",
-      {
-        body: msg.file.toString("base64"),
-        id: msg.id,
-        type: "IMG",
-        fileName: msg.fileName,
-      }
-    );
+  socket.on("image-share", function (msg) {
+    io.sockets.emit("image-share-received", {
+      body: msg.file.toString("base64"),
+      id: msg.id,
+      type: "IMG",
+      fileName: msg.fileName,
+    });
   });
 
-
+  socket.on("disconnect", () => {
+    activeUsers.delete(socket.userId);
+    io.emit("user-disconnected", socket.userId, [...activeUsers]);
+  });
 });
 
 server.listen(port, () => {

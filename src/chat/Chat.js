@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import Picker from "emoji-picker-react";
-import { useToasts } from 'react-toast-notifications'
+import { useToasts } from "react-toast-notifications";
 
-import { getCurrentTime, capitalize } from "./utils";
-import Message from "./Message";
+import { getCurrentTime } from "./utils";
+import ChatBox from "./ChatBox";
 
 const Chat = ({ location }) => {
   const [userID, setUserID] = useState();
@@ -15,7 +15,7 @@ const Chat = ({ location }) => {
   const [users, setUsers] = useState([]);
   const [emojiClicked, showPanel] = useState(false);
   const socketRef = useRef();
-  const { addToast } = useToasts()
+  const { addToast } = useToasts();
 
   const sendEmoji = (event, emojiObject) => {
     setMessage((res) => res + emojiObject.emoji);
@@ -31,24 +31,31 @@ const Chat = ({ location }) => {
     socketRef.current.on("received message", (message) => {
       setMessages((oldMsgs) => [...oldMsgs, message]);
     });
+
     socketRef.current.on("user-connected", (users) => {
       setUsers(users);
-     
     });
-    socketRef.current.on("new-user-connected", (user) => {
-      addToast(`${user} join the chat room `, {
-        appearance: 'info',
-        autoDismiss: true,
-      })
-     
+
+    socketRef.current.on("new-user-connected", (userName) => {
+      sendToast(`${userName} join the chat room `);
     });
-    
-    
-    socketRef.current.on("base64 file", (img) => {
+
+    socketRef.current.on("image-share-received", (img) => {
       setMessages((oldMsgs) => [...oldMsgs, img]);
+    });
+
+    socketRef.current.on("user-disconnected", (userName, activeUsers) => {
+      sendToast(`${userName} left the chat room `);
+      setUsers(activeUsers);
     });
   }, []);
 
+  function sendToast(msg){
+    addToast(msg, {
+      appearance: "info",
+      autoDismiss: true,
+    });
+  }
   function sendMessage(e) {
     e.preventDefault();
     const messageObject = {
@@ -77,42 +84,19 @@ const Chat = ({ location }) => {
       msg.file = evt.target.result;
       msg.fileName = data.name;
       msg.type = "IMG";
-      socketRef.current.emit("base64 file", msg);
+      socketRef.current.emit("image-share", msg);
     };
     reader.readAsDataURL(data);
   }
 
-  if (users.length === 0) {
-    return (
-      <div className="justify-center container-bgcolor jumbotron  join-chat">
-        Please join the Chat Room
-      </div>
-    );
-  }
+ 
   return (
     <div
       id="wrapper"
       style={{ marginTop: "1rem" }}
       className={toggle ? " d-flex toggledright" : "container d-flex toggle"}
     >
-      <div className="bg-light-chat " id="sidebar-wrapper">
-        <div className="activeUsers text-center font-weight-bold">
-          Active Users
-        </div>
-        <div className="list-group list-group-flush">
-          {users.map((user, index) => (
-            <div
-              key={index}
-              className="users list-group-item list-group-item-action bg-light-chat"
-            >
-              <div className="online">
-                {user && user.charAt(0).toUpperCase()}
-              </div>
-              {capitalize(user)}
-            </div>
-          ))}
-        </div>
-      </div>
+     
 
       <div id="page-content-wrapper">
         <nav class="navbar navbar-expand-md navbar-blue">
@@ -133,7 +117,7 @@ const Chat = ({ location }) => {
           </button>
 
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav">
+            <div class="navbar-nav navbar-brand">
               <span class="nav-item text-white active title">Fun2Chat</span>
             </div>
             <div class="navbar-nav ml-auto">
@@ -152,7 +136,7 @@ const Chat = ({ location }) => {
             >
               {messages.map((msg, index) => {
                 return (
-                  <Message
+                  <ChatBox
                     otherUserMsg={msg.id !== userID}
                     userName={msg.id}
                     message={msg.body}

@@ -17,7 +17,7 @@ const Home = ({ isLogin }) => {
       <div class="container">
         <div class="row">
           <div
-            class="col-md-7 col-sm-10 col-xs-10
+            class="col-md-8 col-sm-12 col-xs-12
            offset-md-1 col-lg-8 offset-lg-2 
             d-flex justify-content-center 
             align-items-center"
