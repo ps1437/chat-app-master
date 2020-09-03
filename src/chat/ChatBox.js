@@ -1,6 +1,6 @@
 import React from "react";
 
-const Message = ({ index, message, time, otherUserMsg, userName, type }) => {
+const ChatBox = ({ index, message, time, otherUserMsg, userName, type }) => {
   var classes = "text-right";
   if (type === "IMG") {
     message = <img src={message} alt="img" style={{ height: "100px" }} />;
@@ -46,4 +46,4 @@ const Message = ({ index, message, time, otherUserMsg, userName, type }) => {
   );
 };
 
-export default Message;
+export default ChatBox;
