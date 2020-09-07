@@ -6,7 +6,7 @@ import Routers from "./chat/router/Routers";
 
 function App() {
   return (
-    <ToastProvider autoDismissTimeout="2000">
+    <ToastProvider autoDismissTimeout="3000">
       <div className="container  h-100 ">
         <Routers />
       </div>
