@@ -53,8 +53,8 @@ const Home = () => {
           user,
         })
         .then((res) => {
-          if (res.status == 200) {
-            history.push("/chat", user);
+          if (res.status === 200) {
+             history.push("/chat", user);
           }
         }).catch(err=>{
          

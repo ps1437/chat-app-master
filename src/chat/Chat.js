@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useCallback } from "react";
 import io from "socket.io-client";
+import { useHistory } from "react-router-dom";
+
 import Picker from "emoji-picker-react";
 import { useToasts } from "react-toast-notifications";
 
@@ -17,19 +19,32 @@ const Chat = ({ location }) => {
   const [emojiClicked, showPanel] = useState(false);
   const socketRef = useRef();
   const { addToast } = useToasts();
+  let history = useHistory();
 
   const sendEmoji = (event, emojiObject) => {
     setMessage((res) => res + emojiObject.emoji);
   };
 
+  const showToast= useCallback((msg)=>{
+    addToast(msg, {
+      appearance: "info",
+      autoDismiss: true,
+    });
+
+  },[addToast] );
+
+
   useEffect(() => {
     socketRef.current = io.connect("/");
-    socketRef.current.emit("join", location.state.roomName, location.state.userName);
+    socketRef.current.emit(
+      "join",
+      location.state.roomName,
+      location.state.userName
+    );
     setUsers([location.state.userName]);
-
     setUserID(location.state.userName);
-    setRoomName(location.state.roomName)
-  }, [location.state.userName]);
+    setRoomName(location.state.roomName);
+  }, [location.state.userName,location.state.roomName]);
 
   useEffect(() => {
     socketRef.current.on("received message", (message) => {
@@ -48,18 +63,13 @@ const Chat = ({ location }) => {
       setMessages((oldMsgs) => [...oldMsgs, img]);
     });
 
-    socketRef.current.on("user-disconnected", (users,userName,) => {
+    socketRef.current.on("user-disconnected", (users, userName) => {
       showToast(`${userName} left the chat room `);
       setUsers(users);
     });
-  }, []);
+  }, [showToast]);
 
-  function showToast(msg) {
-    addToast(msg, {
-      appearance: "info",
-      autoDismiss: true,
-    });
-  }
+ 
   function sendMessage(e) {
     e.preventDefault();
     const messageObject = {
@@ -71,7 +81,7 @@ const Chat = ({ location }) => {
     setMessage("");
     setMessages((oldMsgs) => [...oldMsgs, messageObject]);
 
-    socketRef.current.emit("send message", roomName,messageObject);
+    socketRef.current.emit("send message", roomName, messageObject);
   }
 
   function sendFile(e) {
@@ -81,7 +91,10 @@ const Chat = ({ location }) => {
   function toggleSidebar() {
     setToggle(!toggle);
   }
-
+  function leaveRoom() {
+    socketRef.current.emit("disconnect");
+    history.push("/");
+  }
   function readThenSendFile(data) {
     var reader = new FileReader();
     reader.onload = function (evt) {
@@ -129,6 +142,16 @@ const Chat = ({ location }) => {
             <div class="navbar-nav ml-auto">
               <div className="font-weight-bold text-white activeUsers">
                 {userID}
+              </div>
+              <div
+                title="leave room"
+                className="font-weight-bold text-white activeUsers"
+              >
+                <i
+                  class="fa fa-sign-out"
+                  onClick={leaveRoom}
+                  aria-hidden="true"
+                ></i>
               </div>
             </div>
           </div>

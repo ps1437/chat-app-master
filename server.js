@@ -4,15 +4,13 @@ const path = require("path");
 const app = express();
 const server = http.createServer(app);
 const socket = require("socket.io");
-const io = socket(server);4
+const io = socket(server);
 var bodyParser = require("body-parser");
 
 var port = process.env.PORT || 8000;
 
 const rooms = {};
 
-
-const activeUserInRooms = {};
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "build")));
@@ -21,26 +19,23 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/create", (req, res) => {
   if (rooms[req.body.user.roomName]) {
     return res.status(400).json({
-      status: 'error',
-      error: 'Room is Already exist '+req.body.user.roomName,
+      status: "error",
+      error: `${req.body.user.roomName} Room is Already exist `,
     });
-
   }
   rooms[req.body.user.roomName] = { users: {} };
   io.emit("create-room", req.body.user.roomName);
-   res.send("Success");
+  res.send("Success");
 });
 
 app.post("/join", (req, res) => {
   if (!rooms[req.body.user.roomName]) {
     return res.status(400).json({
-      status: 'error',
-      error: 'No Room Found with Room Name ' +req.body.user.roomName,
+      status: "error",
+      error: `No Room Found with Room Name ${req.body.user.roomName}`,
     });
-
   }
-  rooms[req.body.user.roomName] = { users: {} };
-  io.emit("join", req.body.user.roomName,req.body.user.userName);
+  io.emit("join", req.body.user.roomName, req.body.user.userName);
   res.send("Success");
 });
 
@@ -52,11 +47,8 @@ io.on("connection", (socket) => {
   socket.emit("rooms", rooms);
 
   socket.on("join", (room, username) => {
-    if(!rooms[room]){
-
-    }
-    rooms[room].users[socket.id] = username;
     socket.join(room);
+    rooms[room].users[socket.id] = username;
     io.to(room).emit("user-connected", [...Object.values(rooms[room].users)]);
     socket.to(room).broadcast.emit("new-user-connected", username);
   });
@@ -69,12 +61,10 @@ io.on("connection", (socket) => {
     socket.to(room).broadcast.emit("image-share-received", msg);
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (roomName, userID) => {
     getUserRooms(socket).forEach((room) => {
       const userName = rooms[room].users[socket.id];
-      console.log("userName {} ,", userName);
       delete rooms[room].users[socket.id];
-
       socket
         .to(room)
         .broadcast.emit(
