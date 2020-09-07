@@ -9,8 +9,8 @@ import Sidebar from "./Sidebar";
 
 const Chat = ({ location }) => {
   const [userID, setUserID] = useState();
+  const [roomName, setRoomName] = useState();
   const [toggle, setToggle] = useState();
-
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [users, setUsers] = useState([]);
@@ -24,9 +24,12 @@ const Chat = ({ location }) => {
 
   useEffect(() => {
     socketRef.current = io.connect("/");
-    socketRef.current.emit("join", location.state.userName);
+    socketRef.current.emit("join", location.state.roomName, location.state.userName);
+    setUsers([location.state.userName]);
+
     setUserID(location.state.userName);
-  }, [location]);
+    setRoomName(location.state.roomName)
+  }, [location.state.userName]);
 
   useEffect(() => {
     socketRef.current.on("received message", (message) => {
@@ -38,20 +41,20 @@ const Chat = ({ location }) => {
     });
 
     socketRef.current.on("new-user-connected", (userName) => {
-      sendToast(`${userName} join the chat room `);
+      showToast(`${userName} join the chat room `);
     });
 
     socketRef.current.on("image-share-received", (img) => {
       setMessages((oldMsgs) => [...oldMsgs, img]);
     });
 
-    socketRef.current.on("user-disconnected", (userName, activeUsers) => {
-      sendToast(`${userName} left the chat room `);
-      setUsers(activeUsers);
+    socketRef.current.on("user-disconnected", (users,userName,) => {
+      showToast(`${userName} left the chat room `);
+      setUsers(users);
     });
   }, []);
 
-  function sendToast(msg) {
+  function showToast(msg) {
     addToast(msg, {
       appearance: "info",
       autoDismiss: true,
@@ -66,7 +69,9 @@ const Chat = ({ location }) => {
     };
     showPanel(false);
     setMessage("");
-    socketRef.current.emit("send message", messageObject);
+    setMessages((oldMsgs) => [...oldMsgs, messageObject]);
+
+    socketRef.current.emit("send message", roomName,messageObject);
   }
 
   function sendFile(e) {
@@ -82,10 +87,12 @@ const Chat = ({ location }) => {
     reader.onload = function (evt) {
       var msg = {};
       msg.id = userID;
-      msg.file = evt.target.result;
+      msg.body = evt.target.result.toString("base64");
       msg.fileName = data.name;
       msg.type = "IMG";
-      socketRef.current.emit("image-share", msg);
+      setMessages((oldMsgs) => [...oldMsgs, msg]);
+
+      socketRef.current.emit("image-share", roomName, msg);
     };
     reader.readAsDataURL(data);
   }
