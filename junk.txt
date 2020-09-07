@@ -1,0 +1,13 @@
+		
+	ObjectMapper mapper = new  ObjectMapper();
+	JsonNode readTree;
+	try {
+		readTree = mapper.readTree(new File("D://passwordPolicies (1).json"));
+
+	JsonNode path = readTree.path("passwordPattern");
+	JsonNode pattern = path.path("value");
+	System.out.println(pattern.toString());
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}	
