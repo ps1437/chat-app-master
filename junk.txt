@@ -1,13 +1,18 @@
 		
 	ObjectMapper mapper = new  ObjectMapper();
 	JsonNode readTree;
+	String pwdPattern ="";
 	try {
 		readTree = mapper.readTree(new File("D://passwordPolicies (1).json"));
 
 	JsonNode path = readTree.path("passwordPattern");
 	JsonNode pattern = path.path("value");
-	System.out.println(pattern.toString());
+	pwdPattern =pattern.toString();
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	}	
+	
+	Pattern pattern = Pattern.compile(pwdPattern); 
+	Matcher mather = pattern.matcher(password);
+	return mather.matches(); 
