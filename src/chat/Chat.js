@@ -113,10 +113,9 @@ const Chat = ({ location }) => {
   return (
     <div
       id="wrapper"
-      style={{ marginTop: "1rem" }}
       className={toggle ? " d-flex toggledright" : "container d-flex toggle"}
     >
-      <Sidebar users={users} />
+      <Sidebar users={users} roomName={roomName} />
       <div id="page-content-wrapper">
         <nav class="navbar navbar-expand-md navbar-blue">
           <button
@@ -141,7 +140,7 @@ const Chat = ({ location }) => {
             </div>
             <div class="navbar-nav ml-auto">
               <div className="font-weight-bold text-white activeUsers">
-                {userID}
+                {userID && userID.toUpperCase()}
               </div>
               <div
                 title="leave room"

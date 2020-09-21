@@ -41,11 +41,9 @@ const Home = () => {
         .post("/create", {
           user,
         })
-        .catch(err=>{
-         
+        .catch((err) => {
           setError(err && err.response && err.response.data.error);
-        }
-          );;
+        });
     } else {
       Auth.authenticate();
       axios
@@ -54,13 +52,12 @@ const Home = () => {
         })
         .then((res) => {
           if (res.status === 200) {
-             history.push("/chat", user);
+            history.push("/chat", user);
           }
-        }).catch(err=>{
-         
+        })
+        .catch((err) => {
           setError(err && err.response && err.response.data.error);
-        }
-          );
+        });
     }
   }
 
@@ -94,25 +91,52 @@ const Home = () => {
                     autocomplete="off"
                     id="formLogin"
                   >
-                    <div class="form-group">
-                      <label for="uname">Room Name</label>
-                      <input
-                        type="text"
-                        required
-                        aria-describedby="button-addon2"
-                        className="form-control rounded-0 border-0 py-4 bg-light"
-                        value={user.roomName}
-                        onChange={(e) =>
-                          setUser({
-                            ...user,
-                            roomName: e.target.value,
-                          })
-                        }
-                        autoComplete="off"
-                        autoFocus="on"
-                        placeholder="Please Enter room name"
-                      />
-                    </div>
+                    {!isCreate ? (
+                      <div class="form-group">
+                        <label for="uname">Room Name</label>
+                        <select
+                          className="form-control rounded-0 border-0 bg-light"
+                          value={user.roomName}
+                          onChange={(e) =>
+                            setUser({
+                              ...user,
+                              roomName: e.target.value,
+                            })
+                          }
+                          required
+                        >
+                          {" "}
+                          <option value=""> -Select room - </option>
+                          {rooms &&
+                            rooms.map((roomName, index) => (
+                              <option key={index} value={roomName}>
+                                {" "}
+                                {roomName}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    ) : (
+                      <div class="form-group">
+                        <label for="uname">Room Name</label>
+                        <input
+                          type="text"
+                          required
+                          aria-describedby="button-addon2"
+                          className="form-control rounded-0 border-0 py-4 bg-light"
+                          value={user.roomName}
+                          onChange={(e) =>
+                            setUser({
+                              ...user,
+                              roomName: e.target.value,
+                            })
+                          }
+                          autoComplete="off"
+                          autoFocus="on"
+                          placeholder="Please Enter room name"
+                        />
+                      </div>
+                    )}
 
                     <div class="form-group">
                       <label for="uname">Name</label>
@@ -145,7 +169,7 @@ const Home = () => {
                           setCreateRoom(false);
                           setError("");
                           setUser({ userName: "", roomName: "" });
-                        } }
+                        }}
                         class="btn btn-info btn-block font-weight-bold"
                       >
                         Cancel
@@ -159,9 +183,9 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="row">
+        {/* <div className="row">
           {rooms && rooms.map((roomName) => <Room title={roomName} />)}
-        </div>
+        </div> */}
         <button
           onClick={() => setCreateRoom(!isCreate)}
           title="Create chat room"

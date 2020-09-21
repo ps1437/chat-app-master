@@ -9,7 +9,10 @@ var bodyParser = require("body-parser");
 
 var port = process.env.PORT || 8000;
 
-const rooms = {};
+const rooms = {
+  "Random":{ users: {} },
+  "Funny":{ users: {} },
+};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

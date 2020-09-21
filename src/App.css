@@ -328,3 +328,15 @@ input[type="file"] {
     #3086f1 100%
   );
 }
+
+
+.bg-roomname{
+  background-color: #673AB7 !important;
+  color: white;
+  text-align: center; 
+}
+.bg-roomname:hover{
+  color: white;
+  background-color: #7d4ad6 !important;
+  text-align: center; 
+}
