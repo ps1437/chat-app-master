@@ -61,7 +61,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("image-share", function (room, msg) {
-    console.log(msg);
     socket.to(room).broadcast.emit("image-share-received", msg);
   });
 

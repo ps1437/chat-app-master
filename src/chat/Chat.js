@@ -19,6 +19,7 @@ const Chat = ({ location }) => {
   const [users, setUsers] = useState([]);
   const [emojiClicked, showPanel] = useState(false);
   const [gifClicked, setGifPanel] = useState(false);
+  const messagesEndRef = useRef(null)
 
   const socketRef = useRef();
   const { addToast } = useToasts();
@@ -74,6 +75,11 @@ const Chat = ({ location }) => {
 
   
   }, [showToast]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+  }
+  useEffect(scrollToBottom, [messages]);
 
   function sendMessage(e) {
     e.preventDefault();
@@ -192,17 +198,24 @@ const Chat = ({ location }) => {
                   </div>
                 );
               })}
+                    <div ref={messagesEndRef} />
+
             </div>
             {emojiClicked ? <Picker onEmojiClick={sendEmoji} /> : ""}
             {gifClicked ? (
               <ReactGiphySearchbox
               gifPerPage={30}
+              libray="stickers"
               gifListHeight="250px"
               masonryConfig={[
-                { mq: "300px",columns: 2, imageWidth: 100, gutter: 5 },
-                { mq: "700px", columns: 5, imageWidth: 120, gutter: 5 },
-                { mq: "960px", columns: 7, imageWidth: 120, gutter: 5 }
+                { mq: "320px",columns: 3, imageWidth: 90, gutter: 2 },
+                { mq: "768px", columns: 4, imageWidth: 100, gutter: 5 },
+                { mq: "1024px", columns:  7, imageWidth: 100, gutter: 5 },
+                { mq: "1824px", columns: 14, imageWidth: 100, gutter: 5 }
               ]}
+              gifListHeight={200}
+              listWrapperClassName="es_listWrapper__etyrU"
+              wrapperClassName="es_componentWrapper__1Y0JA"
               poweredByGiphy={false}
                 apiKey="CovmgqzY8DjIxJOhhjz4FAQds8SQIJKC" // Required: get your on https://developers.giphy.com
                 onSelect={(item) => sendGif(item)}
