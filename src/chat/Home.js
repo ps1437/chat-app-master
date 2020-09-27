@@ -4,7 +4,6 @@ import io from "socket.io-client";
 import { useToasts } from "react-toast-notifications";
 import axios from "axios";
 import Auth from "./Auth";
-import Room from "./room/Room";
 
 const Home = () => {
   const [user, setUser] = useState({ userName: "", roomName: "" });
@@ -62,38 +61,38 @@ const Home = () => {
   }
 
   return (
-    <div class="section-1-container section-container">
-      <div class="container">
-        <div class="row">
+    <div className="section-1-container section-container">
+      <div className="container">
+        <div className="row">
           <div
-            class="col-md-8 col-sm-12 col-xs-12
+            className="col-md-8 col-sm-12 col-xs-12
            offset-md-1 col-lg-8 offset-lg-2 
             d-flex justify-content-center 
             align-items-center"
           >
-            <div class="div-to-align">
+            <div className="div-to-align">
               {isError ? (
                 <div className="alert alert-danger"> {isError}</div>
               ) : (
                 ""
               )}
-              <div class="card rounded-1 chat-room-card">
-                <div class="card-header chat-header-title">
-                  <h3 class="mb-0 text-center">
+              <div className="card rounded-1 chat-room-card">
+                <div className="card-header chat-header-title">
+                  <h3 className="mb-0 text-center">
                     {isCreate ? "Create Chat Room" : "Random Chat"}
                   </h3>
                 </div>
-                <div class="card-body">
+                <div className="card-body">
                   <form
-                    class="form"
+                    className="form"
                     onSubmit={creatrOrJoin}
                     //action="/create" method="POST"
-                    autocomplete="off"
+                    autoComplete="off"
                     id="formLogin"
                   >
                     {!isCreate ? (
-                      <div class="form-group">
-                        <label for="uname">Room Name</label>
+                      <div className="form-group">
+                        <label htmlFor="uname">Room Name</label>
                         <select
                           className="form-control rounded-0 border-0 bg-light"
                           value={user.roomName}
@@ -117,8 +116,8 @@ const Home = () => {
                         </select>
                       </div>
                     ) : (
-                      <div class="form-group">
-                        <label for="uname">Room Name</label>
+                      <div className="form-group">
+                        <label htmlFor="uname">Room Name</label>
                         <input
                           type="text"
                           required
@@ -138,8 +137,8 @@ const Home = () => {
                       </div>
                     )}
 
-                    <div class="form-group">
-                      <label for="uname">Name</label>
+                    <div className="form-group">
+                      <label htmlFor="uname">Name</label>
                       <input
                         type="text"
                         required
@@ -157,7 +156,7 @@ const Home = () => {
 
                     <button
                       type="submit"
-                      class="btn btn-success btn-block font-weight-bold"
+                      className="btn btn-success btn-block font-weight-bold"
                     >
                       {isCreate ? " Create" : "Join"}
                     </button>
@@ -170,7 +169,7 @@ const Home = () => {
                           setError("");
                           setUser({ userName: "", roomName: "" });
                         }}
-                        class="btn btn-info btn-block font-weight-bold"
+                        className="btn btn-info btn-block font-weight-bold"
                       >
                         Cancel
                       </button>
@@ -189,9 +188,9 @@ const Home = () => {
         <button
           onClick={() => setCreateRoom(!isCreate)}
           title="Create chat room"
-          class="btn btn-rounded float"
+          className="btn btn-rounded float"
         >
-          <i class="fa fa-plus my-float"></i>
+          <i className="fa fa-plus my-float"></i>
         </button>
       </div>
     </div>

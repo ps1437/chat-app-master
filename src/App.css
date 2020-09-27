@@ -340,3 +340,20 @@ input[type="file"] {
   background-color: #7d4ad6 !important;
   text-align: center; 
 }
+
+.es_componentWrapper__1Y0JA {
+  box-sizing: border-box;
+  width: 90% !important;
+  /* height: 199px !important; */
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  margin-top: 9rem;
+  margin-left: 0;
+  margin-right: 1rem;
+  background-color:rgb(231, 221, 221);
+}
+.es_listWrapper__etyrU {
+  overflow-y: auto;
+  height: 13rem;
+}

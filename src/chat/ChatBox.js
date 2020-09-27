@@ -7,7 +7,7 @@ const ChatBox = ({ index, message, time, otherUserMsg, userName, type }) => {
   }
 
   if (otherUserMsg) {
-     classes = "text-left";
+    classes = "text-left";
   }
   let messageBody = (
     <div className={otherUserMsg ? "msg-bubble-right" : "msg-bubble-left"}>
@@ -46,4 +46,4 @@ const ChatBox = ({ index, message, time, otherUserMsg, userName, type }) => {
   );
 };
 
-export default ChatBox;
+export default React.memo(ChatBox);

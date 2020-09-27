@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef,useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import io from "socket.io-client";
 import { useHistory } from "react-router-dom";
+import ReactGiphySearchbox from "react-giphy-searchbox";
 
 import Picker from "emoji-picker-react";
 import { useToasts } from "react-toast-notifications";
@@ -17,6 +18,8 @@ const Chat = ({ location }) => {
   const [message, setMessage] = useState("");
   const [users, setUsers] = useState([]);
   const [emojiClicked, showPanel] = useState(false);
+  const [gifClicked, setGifPanel] = useState(false);
+
   const socketRef = useRef();
   const { addToast } = useToasts();
   let history = useHistory();
@@ -25,14 +28,15 @@ const Chat = ({ location }) => {
     setMessage((res) => res + emojiObject.emoji);
   };
 
-  const showToast= useCallback((msg)=>{
-    addToast(msg, {
-      appearance: "info",
-      autoDismiss: true,
-    });
-
-  },[addToast] );
-
+  const showToast = useCallback(
+    (msg) => {
+      addToast(msg, {
+        appearance: "info",
+        autoDismiss: true,
+      });
+    },
+    [addToast]
+  );
 
   useEffect(() => {
     socketRef.current = io.connect("/");
@@ -44,7 +48,7 @@ const Chat = ({ location }) => {
     setUsers([location.state.userName]);
     setUserID(location.state.userName);
     setRoomName(location.state.roomName);
-  }, [location.state.userName,location.state.roomName]);
+  }, [location.state.userName, location.state.roomName]);
 
   useEffect(() => {
     socketRef.current.on("received message", (message) => {
@@ -67,9 +71,10 @@ const Chat = ({ location }) => {
       showToast(`${userName} left the chat room `);
       setUsers(users);
     });
+
+  
   }, [showToast]);
 
- 
   function sendMessage(e) {
     e.preventDefault();
     const messageObject = {
@@ -95,6 +100,17 @@ const Chat = ({ location }) => {
     socketRef.current.emit("disconnect");
     history.push("/");
   }
+
+  function sendGif(item){
+  console.log(item);
+    var msg = {};
+    msg.id = userID;
+    msg.body = item.images.preview_gif.url;
+    msg.fileName = item.type;
+    msg.type = "IMG";
+    setMessages((oldMsgs) => [...oldMsgs, msg]);
+    socketRef.current.emit("image-share", roomName, msg);
+  }
   function readThenSendFile(data) {
     var reader = new FileReader();
     reader.onload = function (evt) {
@@ -117,7 +133,7 @@ const Chat = ({ location }) => {
     >
       <Sidebar users={users} roomName={roomName} />
       <div id="page-content-wrapper">
-        <nav class="navbar navbar-expand-md navbar-blue">
+        <nav className="navbar navbar-expand-md navbar-blue">
           <button
             className="btn btn-default menuToggle"
             onClick={toggleSidebar}
@@ -127,18 +143,18 @@ const Chat = ({ location }) => {
 
           <button
             type="button"
-            class="navbar-toggler"
+            className="navbar-toggler"
             data-toggle="collapse"
             data-target="#navbarCollapse"
           >
             <i className="text-white fa fa-bars" aria-hidden="true"></i>
           </button>
 
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav navbar-brand">
-              <span class="nav-item text-white active title">Fun2Chat</span>
+          <div className="collapse navbar-collapse" id="navbarCollapse">
+            <div className="navbar-nav navbar-brand">
+              <span className="nav-item text-white active title">Fun2Chat</span>
             </div>
-            <div class="navbar-nav ml-auto">
+            <div className="navbar-nav ml-auto">
               <div className="font-weight-bold text-white activeUsers">
                 {userID && userID.toUpperCase()}
               </div>
@@ -147,7 +163,7 @@ const Chat = ({ location }) => {
                 className="font-weight-bold text-white activeUsers"
               >
                 <i
-                  class="fa fa-sign-out"
+                  className="fa fa-sign-out"
                   onClick={leaveRoom}
                   aria-hidden="true"
                 ></i>
@@ -164,6 +180,7 @@ const Chat = ({ location }) => {
             >
               {messages.map((msg, index) => {
                 return (
+                  <div key ={index}>
                   <ChatBox
                     otherUserMsg={msg.id !== userID}
                     userName={msg.id}
@@ -172,11 +189,28 @@ const Chat = ({ location }) => {
                     index={index}
                     time={getCurrentTime("-")}
                   />
+                  </div>
                 );
               })}
             </div>
             {emojiClicked ? <Picker onEmojiClick={sendEmoji} /> : ""}
-
+            {gifClicked ? (
+              <ReactGiphySearchbox
+              gifPerPage={30}
+              gifListHeight="250px"
+              masonryConfig={[
+                { mq: "300px",columns: 2, imageWidth: 100, gutter: 5 },
+                { mq: "700px", columns: 5, imageWidth: 120, gutter: 5 },
+                { mq: "960px", columns: 7, imageWidth: 120, gutter: 5 }
+              ]}
+              poweredByGiphy={false}
+                apiKey="CovmgqzY8DjIxJOhhjz4FAQds8SQIJKC" // Required: get your on https://developers.giphy.com
+                onSelect={(item) => sendGif(item)}
+              />
+            ) : (
+              ""
+            )}
+            <div>
             <form onSubmit={sendMessage} className="bg-light-chat p-2">
               <div className="input-group">
                 <label className="custom-file-upload">
@@ -198,7 +232,7 @@ const Chat = ({ location }) => {
                 </label>
 
                 <button
-                  onClick={() => showPanel(!emojiClicked)}
+                  onClick={() => {setGifPanel(false);showPanel(!emojiClicked)}}
                   id="clear"
                   type="button"
                   title="Emoji"
@@ -208,12 +242,31 @@ const Chat = ({ location }) => {
                     &#128540;
                   </span>
                 </button>
+                <button
+                  onClick={() => {
+                    setGifPanel(!gifClicked)
+                    showPanel(false);
+                  }}
+                  id="clear"
+                  type="button"
+                  title="Emoji"
+                  className="btn btn-emoji"
+                >
+                  <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
+                    GIF
+                  </span>
+                </button>
 
                 <input
                   type="text"
                   className="form-control rounded-0 border-1 py-4"
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(e) => {
+                    if(emojiClicked){showPanel(false);}
+                    if(gifClicked){setGifPanel(false);}
+                    
+                    setMessage(e.target.value)}
+                  }
                   autoComplete="off"
                   autoFocus="on"
                   placeholder="type your message here..."
@@ -224,7 +277,7 @@ const Chat = ({ location }) => {
                   </button>
                 </div>
               </div>
-            </form>
+            </form></div>
           </div>
         </div>
       </div>
