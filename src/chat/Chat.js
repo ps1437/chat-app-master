@@ -73,7 +73,7 @@ const Chat = ({ location }) => {
       setUsers(users);
     });
 
-  
+
   }, [showToast]);
 
   const scrollToBottom = () => {
@@ -107,8 +107,8 @@ const Chat = ({ location }) => {
     history.push("/");
   }
 
-  function sendGif(item){
-  console.log(item);
+  function sendGif(item) {
+    console.log(item);
     var msg = {};
     msg.id = userID;
     msg.body = item.images.preview_gif.url;
@@ -186,111 +186,136 @@ const Chat = ({ location }) => {
             >
               {messages.map((msg, index) => {
                 return (
-                  <div key ={index}>
-                  <ChatBox
-                    otherUserMsg={msg.id !== userID}
-                    userName={msg.id}
-                    message={msg.body}
-                    type={msg.type}
-                    index={index}
-                    time={getCurrentTime("-")}
-                  />
+                  <div key={index}>
+                    <ChatBox
+                      otherUserMsg={msg.id !== userID}
+                      userName={msg.id}
+                      message={msg.body}
+                      type={msg.type}
+                      index={index}
+                      time={getCurrentTime("-")}
+                    />
                   </div>
                 );
               })}
-                    <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} />
 
             </div>
             {emojiClicked ? <Picker onEmojiClick={sendEmoji} /> : ""}
             {gifClicked ? (
               <ReactGiphySearchbox
-              gifPerPage={30}
-              libray="stickers"
-              gifListHeight="250px"
-              masonryConfig={[
-                { mq: "320px",columns: 3, imageWidth: 90, gutter: 2 },
-                { mq: "768px", columns: 4, imageWidth: 100, gutter: 5 },
-                { mq: "1024px", columns:  7, imageWidth: 100, gutter: 5 },
-                { mq: "1824px", columns: 14, imageWidth: 100, gutter: 5 }
-              ]}
-              gifListHeight={200}
-              listWrapperClassName="es_listWrapper__etyrU"
-              wrapperClassName="es_componentWrapper__1Y0JA"
-              poweredByGiphy={false}
+                gifPerPage={30}
+                libray="stickers"
+                gifListHeight="250px"
+                masonryConfig={[
+                  { mq: "320px", columns: 3, imageWidth: 90, gutter: 2 },
+                  { mq: "768px", columns: 4, imageWidth: 100, gutter: 5 },
+                  { mq: "1024px", columns: 7, imageWidth: 100, gutter: 5 },
+                  { mq: "1824px", columns: 14, imageWidth: 100, gutter: 5 }
+                ]}
+                gifListHeight={200}
+                listWrapperClassName="es_listWrapper__etyrU"
+                wrapperClassName="es_componentWrapper__1Y0JA"
+                poweredByGiphy={false}
                 apiKey="CovmgqzY8DjIxJOhhjz4FAQds8SQIJKC" // Required: get your on https://developers.giphy.com
                 onSelect={(item) => sendGif(item)}
               />
             ) : (
-              ""
-            )}
+                ""
+              )}
             <div>
-            <form onSubmit={sendMessage} className="bg-light-chat p-2">
-              <div className="input-group">
-                <label className="custom-file-upload">
-                  <i
-                    title="send pics"
-                    className="fa fa-upload"
-                    aria-hidden="true"
-                  ></i>
+              <form onSubmit={sendMessage} className="bg-light-chat p-2">
+                <div className="input-group">
+                  <label className="custom-file-upload">
+                    <i
+                      title="send pics"
+                      className="fa fa-upload"
+                      aria-hidden="true"
+                    ></i>
+
+                    <input
+                      type="file"
+                      className="form-control rounded-0 border-0 py-4 bg-light-chat"
+                      onChange={(e) => sendFile(e)}
+                      autoComplete="off"
+                      accept="image/*"
+                      autoFocus="on"
+                      placeholder="type your message here..."
+                    />
+                  </label>
+
+                  <button
+                    onClick={() => { setGifPanel(false); showPanel(!emojiClicked) }}
+                    id="clear"
+                    type="button"
+                    title="Emoji"
+                    className="btn btn-emoji"
+                  >
+                    <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
+                      &#128540;
+                  </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setGifPanel(!gifClicked)
+                      showPanel(false);
+                    }}
+                    id="clear"
+                    type="button"
+                    title="Emoji"
+                    className="btn btn-emoji"
+                  >
+                    <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
+                      GIF
+                  </span>
+                  </button>
 
                   <input
-                    type="file"
-                    className="form-control rounded-0 border-0 py-4 bg-light-chat"
-                    onChange={(e) => sendFile(e)}
+                    type="text"
+                    id="desktop"
+                    className="form-control rounded-0 border-1 py-4"
+                    value={message}
+                    onChange={(e) => {
+                      if (emojiClicked) { showPanel(false); }
+                      if (gifClicked) { setGifPanel(false); }
+
+                      setMessage(e.target.value)
+                    }
+                    }
                     autoComplete="off"
-                    accept="image/*"
                     autoFocus="on"
                     placeholder="type your message here..."
                   />
-                </label>
+                  <div className="input-group-append" id="desktop">
+                    <button type="submit" className="btn btn-success">
+                      <i className="fa fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                  </div>
 
-                <button
-                  onClick={() => {setGifPanel(false);showPanel(!emojiClicked)}}
-                  id="clear"
-                  type="button"
-                  title="Emoji"
-                  className="btn btn-emoji"
-                >
-                  <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
-                    &#128540;
-                  </span>
-                </button>
-                <button
-                  onClick={() => {
-                    setGifPanel(!gifClicked)
-                    showPanel(false);
-                  }}
-                  id="clear"
-                  type="button"
-                  title="Emoji"
-                  className="btn btn-emoji"
-                >
-                  <span role="img" aria-labelledby="jsx-a11y/accessible-emoji">
-                    GIF
-                  </span>
-                </button>
-
-                <input
-                  type="text"
-                  className="form-control rounded-0 border-1 py-4"
-                  value={message}
-                  onChange={(e) => {
-                    if(emojiClicked){showPanel(false);}
-                    if(gifClicked){setGifPanel(false);}
-                    
-                    setMessage(e.target.value)}
-                  }
-                  autoComplete="off"
-                  autoFocus="on"
-                  placeholder="type your message here..."
-                />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-success">
-                    <i className="fa fa-paper-plane" aria-hidden="true"></i>
-                  </button>
                 </div>
-              </div>
-            </form></div>
+                <div className="m-send" id="mobile">
+                  <input
+                    type="text"
+                    className="form-control rounded-0 border-1 py-4"
+                    value={message}
+                    onChange={(e) => {
+                      if (emojiClicked) { showPanel(false); }
+                      if (gifClicked) { setGifPanel(false); }
+
+                      setMessage(e.target.value)
+                    }
+                    }
+                    autoComplete="off"
+                    autoFocus="on"
+                    placeholder="type your message here..."
+                  />
+                  <div className="input-group-append">
+                    <button type="submit" className="btn btn-success">
+                      <i className="fa fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                  </div></div>
+
+              </form></div>
           </div>
         </div>
       </div>

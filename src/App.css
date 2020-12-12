@@ -269,11 +269,31 @@ input[type="file"] {
   font-weight: bolder;
 }
 
+.m-send{
+  display: flex;
+}
+#mobile{
+  display: none ;
+}
 @media only screen and (max-width: 768px) {
   #sidebar-wrapper {
-    margin-left: -15rem;
-    
+    margin-left: -25rem;
+    position: absolute;
+    position: absolute;
+    top: 60px;
+ 
+    z-index: 20;
+    width: 80%;
   }
+  #mobile{
+    display: flex ;
+  }
+
+  #desktop{
+    display: none;
+
+  }
+
   .div-to-align {
     width: 100%;
   }
