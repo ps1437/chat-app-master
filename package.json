@@ -4,7 +4,7 @@
   "private": false,
   "author": "Praveen Kumar Soni",
   "proxy": "http://localhost:8000",
-  "homepage": "http://ps1437.github.io",
+  "homepage": "https://ps1437.github.io/chat-app-master/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
