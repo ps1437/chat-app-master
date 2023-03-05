@@ -4,7 +4,7 @@
   "private": false,
   "author": "Praveen Kumar Soni",
   "proxy": "http://localhost:8000",
-  "homepage": "https://ps1437.github.io/build",
+  "homepage": "https://ps1437.github.io",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
