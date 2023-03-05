@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/chat-app-master/static/css/main.5c73d4cf.css",
-    "main.js": "/chat-app-master/static/js/main.db20c2b5.js",
-    "static/js/769.d22b87a4.chunk.js": "/chat-app-master/static/js/769.d22b87a4.chunk.js",
-    "static/css/779.020d5356.chunk.css": "/chat-app-master/static/css/779.020d5356.chunk.css",
-    "static/js/779.4cec5889.chunk.js": "/chat-app-master/static/js/779.4cec5889.chunk.js",
-    "static/js/339.8189d5f2.chunk.js": "/chat-app-master/static/js/339.8189d5f2.chunk.js",
-    "static/js/363.e4cdbb46.chunk.js": "/chat-app-master/static/js/363.e4cdbb46.chunk.js",
-    "static/js/758.4cc8a822.chunk.js": "/chat-app-master/static/js/758.4cc8a822.chunk.js",
-    "index.html": "/chat-app-master/index.html",
-    "static/media/spinner.svg": "/chat-app-master/static/media/spinner.651c2acc76b64a03f608bc3a33409a52.svg",
-    "main.5c73d4cf.css.map": "/chat-app-master/static/css/main.5c73d4cf.css.map",
-    "main.db20c2b5.js.map": "/chat-app-master/static/js/main.db20c2b5.js.map",
-    "769.d22b87a4.chunk.js.map": "/chat-app-master/static/js/769.d22b87a4.chunk.js.map",
-    "779.020d5356.chunk.css.map": "/chat-app-master/static/css/779.020d5356.chunk.css.map",
-    "779.4cec5889.chunk.js.map": "/chat-app-master/static/js/779.4cec5889.chunk.js.map",
-    "339.8189d5f2.chunk.js.map": "/chat-app-master/static/js/339.8189d5f2.chunk.js.map",
-    "363.e4cdbb46.chunk.js.map": "/chat-app-master/static/js/363.e4cdbb46.chunk.js.map",
-    "758.4cc8a822.chunk.js.map": "/chat-app-master/static/js/758.4cc8a822.chunk.js.map"
+    "main.css": "/build/static/css/main.5c73d4cf.css",
+    "main.js": "/build/static/js/main.8baac2b6.js",
+    "static/js/769.d22b87a4.chunk.js": "/build/static/js/769.d22b87a4.chunk.js",
+    "static/css/779.020d5356.chunk.css": "/build/static/css/779.020d5356.chunk.css",
+    "static/js/779.4cec5889.chunk.js": "/build/static/js/779.4cec5889.chunk.js",
+    "static/js/339.42f5575f.chunk.js": "/build/static/js/339.42f5575f.chunk.js",
+    "static/js/363.e4cdbb46.chunk.js": "/build/static/js/363.e4cdbb46.chunk.js",
+    "static/js/758.4cc8a822.chunk.js": "/build/static/js/758.4cc8a822.chunk.js",
+    "index.html": "/build/index.html",
+    "static/media/spinner.svg": "/build/static/media/spinner.651c2acc76b64a03f608bc3a33409a52.svg",
+    "main.5c73d4cf.css.map": "/build/static/css/main.5c73d4cf.css.map",
+    "main.8baac2b6.js.map": "/build/static/js/main.8baac2b6.js.map",
+    "769.d22b87a4.chunk.js.map": "/build/static/js/769.d22b87a4.chunk.js.map",
+    "779.020d5356.chunk.css.map": "/build/static/css/779.020d5356.chunk.css.map",
+    "779.4cec5889.chunk.js.map": "/build/static/js/779.4cec5889.chunk.js.map",
+    "339.42f5575f.chunk.js.map": "/build/static/js/339.42f5575f.chunk.js.map",
+    "363.e4cdbb46.chunk.js.map": "/build/static/js/363.e4cdbb46.chunk.js.map",
+    "758.4cc8a822.chunk.js.map": "/build/static/js/758.4cc8a822.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5c73d4cf.css",
-    "static/js/main.db20c2b5.js"
+    "static/js/main.8baac2b6.js"
   ]
 }
